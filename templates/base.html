@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telenary - Self-Hosted Cloud Media CDN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="dark-theme">
+    <div class="app-layout">
+        <!-- Top Navbar -->
+        <header class="top-nav">
+            <div class="brand">
+                <div class="brand-logo"><i data-lucide="zap"></i></div>
+                <span class="brand-name">TELENARY</span>
+                <span class="badge">Cloudinary Replacement CDN</span>
+            </div>
+
+            <div class="nav-right">
+                <div class="status-indicator">
+                    <span class="dot"></span> Telegram Storage Active
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

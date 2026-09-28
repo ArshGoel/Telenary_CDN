@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <!-- Hero / Metrics Header -->
+    <div class="metrics-row">
+        <div class="metric-card">
+            <div class="metric-icon"><i data-lucide="layers"></i></div>
+            <div>
+                <span class="metric-value" id="statTotalAssets">{{ total_assets }}</span>
+                <span class="metric-label">Media Assets Uploaded</span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-icon"><i data-lucide="hard-drive"></i></div>
+            <div>
+                <span class="metric-value">Unlimited</span>
+                <span class="metric-label">Telegram Cloud Backend</span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-icon"><i data-lucide="key"></i></div>
+            <div>
+                <span class="metric-value">{{ api_keys|length }}</span>
+                <span class="metric-label">Active API Keys</span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-icon"><i data-lucide="globe"></i></div>
+            <div>
+                <span class="metric-value">CORS Enabled</span>
+                <span class="metric-label">Access-Control-Allow-Origin: *</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Upload Sandbox & Asset Manager -->
+    <div class="content-section">
+        <div class="section-header">
+            <div>
+                <h2>Media Assets & CDN URLs</h2>
+                <p>Upload files directly or use the REST API endpoints below from any external project.</p>
+            </div>
+            <div>
+                <button class="btn btn-primary" id="btnTriggerUpload">
+                    <i data-lucide="upload-cloud"></i> Upload Asset
+                </button>
+                <input type="file" id="sandboxFileInput" multiple style="display: none;">
+            </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div id="uploadProgressBox" class="progress-box hidden">
+            <div class="progress-info">
+                <span id="uploadProgressText">Uploading file to Telegram CDN...</span>
+                <span id="uploadProgressPercent">0%</span>
+            </div>
+            <div class="progress-track"><div id="uploadProgressFill" class="progress-fill"></div></div>
+        </div>
+
+        <!-- Asset Grid -->
+        <div id="assetGridContainer" class="asset-grid">
+            <div class="loading-spinner">
+                <i data-lucide="loader-2" class="spin"></i>
+                <p>Loading media assets from database...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Key Manager & Developer Integration -->
+    <div class="content-section">
+        <h2>Developer REST API & Code Integration</h2>
+
+        <!-- API Key Box -->
+        <div class="card" style="margin-top: 16px;">
+            <h3>Project API Keys</h3>
+            <form id="createKeyForm" class="form-row" style="margin-top: 12px;">
+                <input type="text" id="keyNameInput" placeholder="Project Name (e.g. My E-commerce Site, Mobile App)" required>
+                <button type="submit" class="btn btn-primary"><i data-lucide="plus"></i> Generate API Key</button>
+            </form>
+            <div id="apiKeysListContainer" class="keys-list" style="margin-top: 16px;"></div>
+        </div>
+
+        <!-- Endpoints & Code Snippets -->
+        <div class="card" style="margin-top: 24px;">
+            <h3>Cloudinary-Compatible REST API Specs</h3>
+            
+            <div class="api-box">
+                <div class="api-header">
+                    <span class="method post">POST</span>
+                    <code>/api/v1/upload</code>
+                </div>
+                <p>Uploads an image, video, or raw document to Telegram cloud and returns Cloudinary JSON payload.</p>
+            </div>
+
+            <div class="api-box">
+                <div class="api-header">
+                    <span class="method get">GET</span>
+                    <code>/api/v1/resources</code>
+                </div>
+                <p>Fetches a JSON array of all media assets.</p>
+            </div>
+
+            <div class="api-box">
+                <div class="api-header">
+                    <span class="method get">GET</span>
+                    <code>/api/v1/media/{id}/transform?w=300&h=300&q=80&fmt=webp</code>
+                </div>
+                <p>On-the-fly dynamic image resizing, cropping, and webp format conversion.</p>
+            </div>
+
+            <!-- Code Snippets -->
+            <div style="margin-top: 24px;">
+                <h4>JavaScript / React / Next.js Integration Snippet</h4>
+                <pre class="code-block"><code>const formData = new FormData();
+formData.append('file', fileInput.files[0]);
+
+fetch('http://127.0.0.1:8000/api/v1/upload', {
+    method: 'POST',
+    body: formData
+})
+.then(res => res.json())
+.then(data => {
+    console.log('CDN Image URL:', data.secure_url);
+    console.log('Thumbnail URL:', data.thumbnail_url);
+});</code></pre>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h4>Python (requests) Integration Snippet</h4>
+                <pre class="code-block"><code>import requests
+
+url = "http://127.0.0.1:8000/api/v1/upload"
+files = {'file': open('photo.jpg', 'rb')}
+
+res = requests.post(url, files=files)
+data = res.json()
+print("Cloudinary CDN URL:", data['secure_url'])</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
