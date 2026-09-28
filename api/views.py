@@ -13,8 +13,20 @@ from api.services.media_processor import TelenaryProcessor
 
 def dashboard_view(request):
     """Developer Dashboard & Media Portal View."""
-    total_assets = MediaAsset.objects.count()
-    api_keys = list(ApiKey.objects.values('id', 'name', 'key', 'created_at'))
+    try:
+        total_assets = MediaAsset.objects.count()
+        api_keys = list(ApiKey.objects.values('id', 'name', 'key', 'created_at'))
+    except Exception:
+        # Run database migrations on cold-start if tables don't exist yet
+        try:
+            from django.core.management import call_command
+            call_command('migrate', interactive=False)
+            total_assets = MediaAsset.objects.count()
+            api_keys = list(ApiKey.objects.values('id', 'name', 'key', 'created_at'))
+        except Exception:
+            total_assets = 0
+            api_keys = []
+
     return render(request, 'dashboard.html', {
         'total_assets': total_assets,
         'api_keys': api_keys
