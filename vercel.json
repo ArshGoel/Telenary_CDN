@@ -1,24 +1,26 @@
 {
-    "builds": [{
-        "src": "Telenary/wsgi.py",
-        "use": "@vercel/python",
-        "config": { "runtime": "python3.13.0" }
+  "version": 2,
+  "builds": [
+    {
+      "src": "Telenary/wsgi.py",
+      "use": "@vercel/python"
     },
-        {
-            "src": "build_files.sh",
-            "use": "@vercel/static-build",
-            "config": { "distDir": "staticfiles_build" }
-    
-        }
-    ],
-    "routes": [
-        {   
-            "src": "/static/(.*)",
-            "dest": "/static/$1"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "Telenary/wsgi.py"
-        }
-    ]
+    {
+      "src": "build_files.sh",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "staticfiles_build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "Telenary/wsgi.py"
+    }
+  ]
 }
